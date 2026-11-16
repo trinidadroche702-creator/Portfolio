@@ -59,6 +59,8 @@ CREATE TABLE IF NOT EXISTS projects (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+CREATE INDEX projects_sort_order ON projects (sort_order, id);
+
 CREATE TABLE IF NOT EXISTS education (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     institution VARCHAR(190) NOT NULL,
