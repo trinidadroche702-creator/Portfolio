@@ -39,3 +39,18 @@ function require_admin(): void
 
     $_SESSION['last_activity'] = time();
 }
+
+function upload_image(string $field): string|null
+{
+    if (!isset($_FILES[$field]) || $_FILES[$field]['error'] === UPLOAD_ERR_NO_FILE) { return null; }
+    $file = $_FILES[$field];
+    if ($file['error'] !== UPLOAD_ERR_OK || $file['size'] > 3 * 1024 * 1024) { throw new RuntimeException('Choose an image smaller than 3 MB.'); }
+    $image = getimagesize($file['tmp_name']);
+    $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif', 'image/webp' => 'webp'];
+    if (!$image || !isset($extensions[$image['mime']])) { throw new RuntimeException('Upload a valid JPG, PNG, GIF, or WEBP image.'); }
+    $directory = dirname(__DIR__) . '/uploads';
+    if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) { throw new RuntimeException('Could not create the upload directory.'); }
+    $filename = bin2hex(random_bytes(16)) . '.' . $extensions[$image['mime']];
+    if (!move_uploaded_file($file['tmp_name'], $directory . '/' . $filename)) { throw new RuntimeException('The image could not be saved.'); }
+    return 'uploads/' . $filename;
+}
