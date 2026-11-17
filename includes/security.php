@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/db.php';
 
 function csrf_token(): string
 {
@@ -21,4 +21,21 @@ function verify_csrf_token(): void
         http_response_code(400);
         exit('The form expired. Please go back and try again.');
     }
+}
+
+function require_admin(): void
+{
+    if (empty($_SESSION['admin_id'])) {
+        header('Location: login.php');
+        exit;
+    }
+
+    if (isset($_SESSION['last_activity']) && time() - $_SESSION['last_activity'] > 1800) {
+        session_unset();
+        session_regenerate_id(true);
+        header('Location: login.php');
+        exit;
+    }
+
+    $_SESSION['last_activity'] = time();
 }
