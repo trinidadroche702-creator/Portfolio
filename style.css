@@ -2156,3 +2156,25 @@ body.dark-mode .form-group textarea {
     }
 
 }
+
+.admin-page,
+.admin-login {
+    width: calc(100% - 32px);
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 28px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.admin-login form { display: grid; gap: 12px; }
+.admin-login label { display: grid; gap: 6px; }
+.admin-login input { padding: 10px; }
+.admin-page nav { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 20px; }
+.admin-page button { cursor: pointer; padding: 8px 14px; }
+.form-error { color: #a00030; margin: 12px 0; }
+@media (max-width: 600px) {
+    .admin-page,
+    .admin-login { padding: 18px; }
+}
