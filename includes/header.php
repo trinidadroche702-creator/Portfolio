@@ -2,8 +2,8 @@
 require_once __DIR__ . '/site.php';
 $profile = portfolio_profile();
 $settings = portfolio_settings();
-$pageTitle = $pageTitle ?? $settings['site_title'];
 $activePage = $activePage ?? '';
+$pageTitle = ($activePage !== '' ? $activePage . ' | ' : '') . $settings['site_title'];
 $navigation = ['Home' => 'index.html', 'About' => 'about.html', 'Skills' => 'skills.html', 'Projects' => 'projects.html', 'Resume' => 'resume.html', 'Contact' => 'contact.html'];
 ?>
 <!DOCTYPE html>
