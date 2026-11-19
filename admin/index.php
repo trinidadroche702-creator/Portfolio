@@ -18,6 +18,7 @@ foreach ($tables as $table) { $counts[$table] = (int) database()->query("SELECT 
 <p><?= escape_html(ucwords(str_replace('_', ' ', $label))) ?>: <?= $count ?></p>
 <?php endforeach; ?>
 <nav>
+<a href="account.php">Account security</a>
 <a href="profile.php">Edit profile</a>
 <a href="settings.php">Website settings</a>
 <a href="manage.php?type=skills">Skills</a> <a href="manage.php?type=projects">Projects</a>
