@@ -16,7 +16,7 @@ $adminNav = [
 $adminActive = $adminActive ?? '';
 ?>
 <aside class="admin-sidebar">
-    <a class="brand" href="index.php">Roejie Admin</a>
+    <a class="brand" href="index.php"><i class="fa-solid fa-layer-group"></i> Roche Admin</a>
     <nav aria-label="Admin navigation">
         <?php foreach ($adminNav as $key => [$url, $label, $icon]): ?>
             <a href="<?= htmlspecialchars($url) ?>" class="<?= $adminActive === $key ? 'active' : '' ?>">
