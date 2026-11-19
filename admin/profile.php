@@ -10,6 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf_token();
     foreach ($fields as $field) { $input = $_POST[$field] ?? ''; $values[$field] = is_string($input) ? trim($input) : ''; }
     if ($values['name'] === '' || !filter_var($values['email'], FILTER_VALIDATE_EMAIL)) { $error = 'Enter a name and a valid email address.'; }
+    $limits = ['name' => 120, 'tagline' => 190, 'email' => 190, 'location' => 190, 'school' => 190, 'github_url' => 255, 'linkedin_url' => 255, 'facebook_url' => 255, 'instagram_url' => 255];
+    foreach ($limits as $field => $limit) {
+        if (strlen($values[$field]) > $limit) { $error = 'A profile field is too long.'; }
+    }
     foreach (['github_url', 'linkedin_url', 'facebook_url', 'instagram_url'] as $field) {
         if ($values[$field] !== '' && (!filter_var($values[$field], FILTER_VALIDATE_URL) || !str_starts_with($values[$field], 'https://'))) { $error = 'Social links must use HTTPS.'; }
     }
