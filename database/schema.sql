@@ -148,7 +148,7 @@ INSERT INTO projects (title, description, image_path, technologies, sort_order) 
     ('Visual Graphics Project', 'A low-poly digital illustration of a penguin created in Adobe Illustrator using geometric shapes and carefully arranged polygons.', 'img/Poly Art.png', 'Visual Graphics & Design, Adobe Illustrator', 4);
 
 INSERT INTO education (institution, qualification, dates, description, sort_order) VALUES
-    ('Negros Oriental State University - Bais City Campus', 'Bachelor of Science in Information Technology', 'Current', 'Currently a 3rd-year BS Information Technology student developing skills in programming, web development, databases, networking, and system development.', 1),
+    ('NORSU-BSC', 'Bachelor of Science in Information Technology', 'Current', 'Currently a 3rd-year BS Information Technology student developing skills in programming, web development, databases, networking, and system development.', 1),
     ('Senior High School', 'Senior High School', 'Completed', 'Completed senior high school education and developed an interest in technology, learning, and personal development.', 2);
 
 INSERT INTO experience (title, organization, dates, description, sort_order) VALUES
