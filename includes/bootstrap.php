@@ -2,6 +2,16 @@
 
 declare(strict_types=1);
 
+ini_set('display_errors', '0');
+set_exception_handler(static function (Throwable $exception): void {
+    error_log($exception->__toString());
+    if (!headers_sent()) {
+        http_response_code(500);
+        header('Content-Type: text/html; charset=UTF-8');
+    }
+    echo '<h1>Something went wrong</h1><p>Please try again later.</p>';
+});
+
 $configPath = dirname(__DIR__) . '/config.local.php';
 
 if (!is_file($configPath)) {
