@@ -17,10 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif (!password_verify($current, $admin['password_hash'])) { $error = 'Current password is incorrect.'; }
     elseif (strlen($new) < 12 || $new !== $confirm) { $error = 'New passwords must match and have at least 12 characters.'; }
     else {
+        $check = database()->prepare('SELECT COUNT(*) FROM admins WHERE email = ? AND id != ?');
+        $check->execute([$email, $admin['id']]);
+        if ($check->fetchColumn()) { $error = 'That email is already in use.'; }
+        else {
         $save = database()->prepare('UPDATE admins SET email = ?, password_hash = ? WHERE id = ?');
         $save->execute([$email, password_hash($new, PASSWORD_DEFAULT), $admin['id']]);
         $_SESSION['admin_email'] = $email; session_regenerate_id(true);
         header('Location: account.php?saved=1'); exit;
+        }
     }
 }
 ?>
