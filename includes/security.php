@@ -42,8 +42,11 @@ function require_admin(): void
 
 function upload_image(string $field): string|null
 {
-    if (!isset($_FILES[$field]) || $_FILES[$field]['error'] === UPLOAD_ERR_NO_FILE) { return null; }
+    if (!isset($_FILES[$field])) { return null; }
     $file = $_FILES[$field];
+    if (!is_array($file) || !isset($file['error'], $file['size'], $file['tmp_name'])) { throw new RuntimeException('Invalid image upload.'); }
+    if ($file['error'] === UPLOAD_ERR_NO_FILE) { return null; }
+    if (!is_int($file['error']) || !is_int($file['size']) || !is_string($file['tmp_name'])) { throw new RuntimeException('Invalid image upload.'); }
     if ($file['error'] !== UPLOAD_ERR_OK || $file['size'] > 3 * 1024 * 1024) { throw new RuntimeException('Choose an image smaller than 3 MB.'); }
     $image = getimagesize($file['tmp_name']);
     $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif', 'image/webp' => 'webp'];
