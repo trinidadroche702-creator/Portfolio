@@ -4,7 +4,7 @@ The existing portfolio is being upgraded to a PHP and MySQL application while re
 
 ## Requirements
 
-- PHP 8.1 or later with PDO MySQL enabled
+- PHP 8.0 or later with PDO MySQL enabled
 - MySQL 8.0 or MariaDB 10.4 or later
 - Apache with PHP enabled (XAMPP is suitable)
 
