@@ -1715,6 +1715,48 @@ body.dark-mode .additional-skills {
     box-shadow: var(--shadow);
 }
 
+.contact-item a {
+    transition: var(--transition);
+}
+
+.contact-item a:hover {
+    color: var(--pink-main);
+}
+
+.form-honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.form-notice,
+.contact-form-container .form-error {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--pink-soft);
+}
+
+.form-notice {
+    color: #176b3a;
+}
+
+.contact-form-container .form-error {
+    color: #a00030;
+}
+
+body.dark-mode .form-notice {
+    color: #9be0b2;
+}
+
+body.dark-mode .contact-form-container .form-error {
+    color: #ffb4c0;
+}
+
 .contact-form {
     display: flex;
     flex-direction: column;
