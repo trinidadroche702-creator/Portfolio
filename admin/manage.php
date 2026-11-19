@@ -64,13 +64,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 $rows = database()->query("SELECT * FROM $type ORDER BY sort_order, id")->fetchAll();
+$adminActive = $type;
+$labels = [
+    'skills' => ['Skills', 'fa-lightbulb'],
+    'projects' => ['Projects', 'fa-diagram-project'],
+    'education' => ['Education', 'fa-graduation-cap'],
+    'experience' => ['Experience', 'fa-briefcase'],
+    'achievements' => ['Achievements', 'fa-award'],
+];
+$icon = $labels[$type][1];
 ?>
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title><?= escape_html($title) ?></title><link rel="stylesheet" href="../style.css"></head>
-<body><main class="admin-page"><h1><?= escape_html($title) ?></h1><a href="index.php">Dashboard</a>
-<?php if ($error !== ''): ?><p class="form-error"><?= escape_html($error) ?></p><?php endif; ?>
-<form method="post" enctype="multipart/form-data" action="manage.php?type=<?= escape_html($type) ?>"><input type="hidden" name="csrf_token" value="<?= escape_html(csrf_token()) ?>"><input type="hidden" name="id" value="<?= $id ?>">
-<?php foreach ($fields as $field): ?><label><?= escape_html(ucwords(str_replace('_', ' ', $field))) ?><?php if ($field === 'image_path'): ?><input type="file" name="image" accept="image/jpeg,image/png,image/gif,image/webp"><?php elseif ($field === 'description'): ?><textarea name="<?= escape_html($field) ?>"><?= escape_html($record[$field] ?? '') ?></textarea><?php else: ?><input type="<?= in_array($field, ['level', 'sort_order'], true) ? 'number' : 'text' ?>" name="<?= escape_html($field) ?>" value="<?= escape_html($record[$field] ?? '') ?>" <?= in_array($field, ['name', 'title', 'institution'], true) ? 'required' : '' ?>><?php endif; ?></label><?php endforeach; ?>
-<button name="action" value="save">Save</button></form>
-<?php foreach ($rows as $row): ?><article><a href="manage.php?type=<?= escape_html($type) ?>&amp;id=<?= (int) $row['id'] ?>"><?= escape_html($row[$fields[0]]) ?></a><form method="post" action="manage.php?type=<?= escape_html($type) ?>"><input type="hidden" name="csrf_token" value="<?= escape_html(csrf_token()) ?>"><input type="hidden" name="id" value="<?= (int) $row['id'] ?>"><button name="action" value="delete">Delete</button></form></article><?php endforeach; ?>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title><?= escape_html($title) ?> | Portfolio Admin</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="admin.css"></head>
+<body class="admin-body">
+<?php require __DIR__ . '/_layout.php'; ?>
+<div class="admin-topbar">
+    <h1>Manage <span><?= escape_html($title) ?></span></h1>
+    <span class="who"><i class="fa-solid <?= $icon ?>"></i> <?= count($rows) ?> record<?= count($rows) === 1 ? '' : 's' ?></span>
+</div>
+<?php if ($error !== ''): ?><p class="alert alert-error"><?= escape_html($error) ?></p><?php endif; ?>
+<div class="admin-card">
+    <h2><i class="fa-solid <?= $id ? 'fa-pen' : 'fa-plus' ?>"></i> <?= $id ? 'Edit record' : 'Add new record' ?></h2>
+    <form class="admin-form" method="post" enctype="multipart/form-data" action="manage.php?type=<?= escape_html($type) ?><?= $id ? '&amp;id=' . (int) $id : '' ?>"><input type="hidden" name="csrf_token" value="<?= escape_html(csrf_token()) ?>"><input type="hidden" name="id" value="<?= $id ?>">
+    <?php foreach ($fields as $field): ?><?php if ($field === 'image_path'): ?>
+        <fieldset>
+            <legend>Image</legend>
+            <?php if (!empty($record['image_path'])): ?><img class="thumb" src="../<?= escape_html($record['image_path']) ?>" alt="Current image" style="width:120px;border-radius:10px;display:block;margin-bottom:10px"><?php endif; ?>
+            <label>Upload image (JPG, PNG, GIF or WEBP)<input type="file" name="image" accept="image/jpeg,image/png,image/gif,image/webp"></label>
+        </fieldset>
+    <?php elseif ($field === 'description'): ?>
+        <label>Description<textarea name="<?= escape_html($field) ?>" rows="5"><?= escape_html($record[$field] ?? '') ?></textarea></label>
+    <?php else: ?>
+        <label><?= escape_html(ucwords(str_replace('_', ' ', $field))) ?><input type="<?= in_array($field, ['level', 'sort_order'], true) ? 'number' : 'text' ?>" name="<?= escape_html($field) ?>" value="<?= escape_html($record[$field] ?? '') ?>" <?= in_array($field, ['name', 'title', 'institution'], true) ? 'required' : '' ?>></label>
+    <?php endif; ?><?php endforeach; ?>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" name="action" value="save"><i class="fa-solid fa-floppy-disk"></i> <?= $id ? 'Save changes' : 'Add record' ?></button>
+        <?php if ($id): ?><a class="btn btn-ghost" href="manage.php?type=<?= escape_html($type) ?>"><i class="fa-solid fa-plus"></i> New instead</a><?php endif; ?>
+    </div>
+    </form>
+</div>
+<div class="admin-table-wrap">
+<table class="admin-table">
+    <caption>Existing <?= strtolower($title) ?></caption>
+    <thead><tr><th>#</th><th><?= escape_html(ucwords(str_replace('_', ' ', $fields[0]))) ?></th><th>Actions</th></tr></thead>
+    <tbody>
+    <?php if ($rows === []): ?><tr><td colspan="3" style="color:var(--adm-muted)">Nothing here yet — add your first record above.</td></tr><?php endif; ?>
+    <?php foreach ($rows as $row): ?>
+        <tr>
+            <td><?= (int) $row['id'] ?></td>
+            <td>
+                <?php if (!empty($row['image_path'])): ?><img class="thumb" src="../<?= escape_html($row['image_path']) ?>" alt="" style="margin-right:10px"><?php endif; ?>
+                <?= escape_html((string) $row[$fields[0]]) ?>
+            </td>
+            <td class="actions">
+                <a class="btn btn-ghost btn-small" href="manage.php?type=<?= escape_html($type) ?>&amp;id=<?= (int) $row['id'] ?>"><i class="fa-solid fa-pen"></i> Edit</a>
+                <form method="post" action="manage.php?type=<?= escape_html($type) ?>" onsubmit="return confirm('Delete this record?');"><input type="hidden" name="csrf_token" value="<?= escape_html(csrf_token()) ?>"><input type="hidden" name="id" value="<?= (int) $row['id'] ?>"><button class="btn btn-danger btn-small" name="action" value="delete"><i class="fa-solid fa-trash"></i> Delete</button></form>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+</div>
 </main></body></html>

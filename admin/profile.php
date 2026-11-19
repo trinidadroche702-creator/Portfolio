@@ -36,13 +36,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+$adminActive = 'profile';
 ?>
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Edit profile</title><link rel="stylesheet" href="../style.css"></head>
-<body><main class="admin-page"><h1>Edit profile</h1><a href="index.php">Dashboard</a>
-<?php if ($error !== ''): ?><p class="form-error"><?= escape_html($error) ?></p><?php endif; ?>
-<form method="post" enctype="multipart/form-data"><input type="hidden" name="csrf_token" value="<?= escape_html(csrf_token()) ?>">
-<?php foreach ($fields as $field): ?><label><?= escape_html(ucwords(str_replace('_', ' ', $field))) ?><?php if (in_array($field, ['introduction', 'biography'], true)): ?><textarea name="<?= escape_html($field) ?>" required><?= escape_html($values[$field]) ?></textarea><?php else: ?><input type="<?= $field === 'email' ? 'email' : (str_ends_with($field, '_url') ? 'url' : 'text') ?>" name="<?= escape_html($field) ?>" value="<?= escape_html($values[$field]) ?>" <?= in_array($field, ['name', 'email'], true) ? 'required' : '' ?>><?php endif; ?></label><?php endforeach; ?>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Edit profile | Portfolio Admin</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="admin.css"></head>
+<body class="admin-body">
+<?php require __DIR__ . '/_layout.php'; ?>
+<div class="admin-topbar"><h1>Edit <span>Profile</span></h1></div>
+<?php if (isset($_GET['saved'])): ?><p class="alert alert-ok"><i class="fa-solid fa-circle-check"></i> Profile saved.</p><?php endif; ?>
+<?php if ($error !== ''): ?><p class="alert alert-error"><?= escape_html($error) ?></p><?php endif; ?>
+<div class="admin-card">
+<h2><i class="fa-solid fa-id-card"></i> Personal details</h2>
+<form class="admin-form" method="post" enctype="multipart/form-data"><input type="hidden" name="csrf_token" value="<?= escape_html(csrf_token()) ?>">
+<?php foreach ($fields as $field): ?><label><?= escape_html(ucwords(str_replace('_', ' ', $field))) ?><?php if (in_array($field, ['introduction', 'biography'], true)): ?><textarea name="<?= escape_html($field) ?>" rows="4" required><?= escape_html($values[$field]) ?></textarea><?php else: ?><input type="<?= $field === 'email' ? 'email' : (str_ends_with($field, '_url') ? 'url' : 'text') ?>" name="<?= escape_html($field) ?>" value="<?= escape_html($values[$field]) ?>" <?= in_array($field, ['name', 'email'], true) ? 'required' : '' ?>><?php endif; ?></label><?php endforeach; ?>
+<fieldset>
+<legend>Images</legend>
 <label>Profile image <input type="file" name="profile_image" accept="image/jpeg,image/png,image/gif,image/webp"></label>
 <label>About image <input type="file" name="about_image" accept="image/jpeg,image/png,image/gif,image/webp"></label>
-<button type="submit">Save profile</button></form></main></body></html>
+</fieldset>
+<div><button class="btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save profile</button></div></form></div>
+</main></body></html>

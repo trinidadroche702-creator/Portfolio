@@ -19,11 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin setup</title><link rel="stylesheet" href="../style.css"></head>
-<body><main class="admin-login"><h1>Create the administrator account</h1><p>This page closes after the first account is created.</p>
-<?php if ($error !== ''): ?><p class="form-error"><?= escape_html($error) ?></p><?php endif; ?>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin setup</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="admin.css"></head>
+<body class="admin-body">
+<div class="admin-login-wrap"><div class="admin-login-card">
+<div class="logo-icon"><i class="fa-solid fa-user-plus"></i></div>
+<h1>Create the administrator account</h1><p class="sub">This page closes after the first account is created.</p>
+<?php if ($error !== ''): ?><p class="alert alert-error"><?= escape_html($error) ?></p><?php endif; ?>
 <form method="post"><input type="hidden" name="csrf_token" value="<?= escape_html(csrf_token()) ?>">
 <label>Email <input type="email" name="email" maxlength="190" required></label>
 <label>Password <input type="password" name="password" minlength="12" required></label>
 <label>Confirm password <input type="password" name="confirm_password" minlength="12" required></label>
-<button type="submit">Create account</button></form></main></body></html>
+<button class="btn" type="submit"><i class="fa-solid fa-check"></i> Create account</button></form>
+</div></div></body></html>

@@ -43,22 +43,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administrator login</title>
-    <link rel="stylesheet" href="../style.css">
+    <title>Administrator login | Portfolio Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
 </head>
-<body>
-<main class="admin-login">
-    <h1>Administrator login</h1>
-    <?php if ($error !== ''): ?><p class="form-error"><?= escape_html($error) ?></p><?php endif; ?>
-    <form method="post">
-        <input type="hidden" name="csrf_token" value="<?= escape_html(csrf_token()) ?>">
-        <label>Email <input type="email" name="email" maxlength="190" autocomplete="username" required></label>
-        <label>Password <input type="password" name="password" autocomplete="current-password" required></label>
-        <button class="primary-btn" type="submit">Log in</button>
-    </form>
-</main>
+
+<body class="admin-body">
+    <div class="admin-login-wrap">
+        <div class="admin-login-card">
+            <div class="logo-icon"><i class="fa-solid fa-lock"></i></div>
+            <h1>Administrator Login</h1>
+            <p class="sub">Sign in to manage your portfolio content.</p>
+            <?php if ($error !== ''): ?><p class="alert alert-error"><?= htmlspecialchars($error) ?></p><?php endif; ?>
+            <form method="post">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
+                <label>Email
+                    <input type="email" name="email" maxlength="190" autocomplete="username" required>
+                </label>
+                <label>Password
+                    <input type="password" name="password" autocomplete="current-password" required>
+                </label>
+                <button class="btn" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Log in</button>
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>
