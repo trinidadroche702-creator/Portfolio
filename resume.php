@@ -7,7 +7,7 @@ $education = portfolio_education(); $experience = portfolio_experience(); $skill
 <section class="resume-grid">
 <div class="resume-column">
 <div class="resume-section"><h2>Education</h2>
-<?php foreach ($education as $item): ?><article class="resume-item"><span class="resume-date"><?= escape_html($item['dates']) ?></span><h3><?= escape_html($item['qualification']) ?></h3><p><?= escape_html($item['institution']) ?></p><p><?= nl2br(escape_html($item['description'])) ?></p></article><?php endforeach; ?>
+<?php foreach ($education as $item): ?><article class="resume-item"><span class="resume-date"><?= escape_html($item['dates']) ?></span><h3><?= escape_html($item['qualification']) ?></h3><?php if ($item['institution'] !== $item['qualification']): ?><p><?= escape_html($item['institution']) ?></p><?php endif; ?><p><?= nl2br(escape_html($item['description'])) ?></p></article><?php endforeach; ?>
 </div><div class="resume-section"><h2>Experience</h2>
 <?php foreach ($experience as $item): ?><article class="resume-item"><span class="resume-date"><?= escape_html($item['dates']) ?></span><h3><?= escape_html($item['title']) ?></h3><p><?= escape_html($item['organization']) ?></p><p><?= nl2br(escape_html($item['description'])) ?></p></article><?php endforeach; ?>
 </div></div>

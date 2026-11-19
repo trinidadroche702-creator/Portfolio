@@ -11,7 +11,7 @@ $achievements = portfolio_achievements();
 </section>
 <section class="about-cards">
 <div class="about-card"><div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div><h3>Education</h3>
-<?php foreach ($education as $item): ?><p><?= escape_html($item['qualification']) ?><br><?= escape_html($item['institution']) ?><br><?= escape_html($item['dates']) ?></p><?php endforeach; ?>
+<?php foreach ($education as $item): ?><p><?= escape_html($item['qualification']) ?><?php if ($item['institution'] !== $item['qualification']): ?><br><?= escape_html($item['institution']) ?><?php endif; ?><br><?= escape_html($item['dates']) ?></p><?php endforeach; ?>
 </div><div class="about-card"><div class="card-icon"><i class="fa-regular fa-heart"></i></div><h3>Achievements</h3>
 <?php foreach ($achievements as $item): ?><p><?= escape_html($item['title']) ?></p><?php endforeach; ?>
 </div>
