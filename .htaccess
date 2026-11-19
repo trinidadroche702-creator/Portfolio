@@ -1,7 +1,7 @@
 Options -Indexes
 DirectoryIndex index.php index.html
 RewriteEngine On
-RewriteRule ^(index|about|skills|projects)\.html$ $1.php [L]
+RewriteRule ^(index|about|skills|projects|resume)\.html$ $1.php [L]
 
 <FilesMatch "^(config\.local\.php|config\.example\.php)$">
     Require all denied
